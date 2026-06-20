@@ -92,7 +92,7 @@ struct Strings {
     var photos: String         { pick("照片",      "Photos",         "写真",             "사진",          "照片") }
     var category: String       { pick("类型",      "Category",       "カテゴリ",         "카테고리",      "類型") }
     var location: String       { pick("位置",      "Location",       "場所",             "위치",          "位置") }
-    var addressPlaceholder: String { pick("输入城市名称/粘贴Google地址", "Enter city or Google address", "都市名またはGoogle住所を入力", "도시명 또는 구글 주소 입력", "輸入城市名稱/貼上Google地址") }
+    var addressPlaceholder: String { pick("粘贴Google地址，搜索定位", "Paste Google address, search to locate", "Google住所を貼り付けて検索", "구글 주소를 붙여넣어 검색", "貼上Google地址，搜尋定位") }
     var locating: String       { pick("定位中...", "Locating...",    "位置取得中...",    "위치 확인 중...", "定位中...") }
     var autoLocate: String     { pick("自动定位",  "Auto-locate",    "自動定位",         "자동 위치",     "自動定位") }
     var coordinateObtained: String { pick("已获取坐标，将显示在地图上", "Coordinates obtained, will show on map", "座標取得済み、地図に表示されます", "좌표 확인, 지도에 표시됩니다", "已獲取座標，將顯示在地圖上") }

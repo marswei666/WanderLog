@@ -84,6 +84,12 @@ struct AddEntryView: View {
         }
     }
 
+    private var isFormValid: Bool {
+        !name.trimmingCharacters(in: .whitespaces).isEmpty
+        && !city.trimmingCharacters(in: .whitespaces).isEmpty
+        && !country.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+
     private var saveButton: some View {
         Button { Task { await save() } } label: {
             if isSaving {
@@ -93,11 +99,11 @@ struct AddEntryView: View {
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 16).padding(.vertical, 7)
-                    .background(name.isEmpty ? Color.wanderMuted : Color.wanderInk)
+                    .background(isFormValid ? Color.wanderInk : Color.wanderMuted)
                     .clipShape(Capsule())
             }
         }
-        .disabled(name.isEmpty || isSaving)
+        .disabled(!isFormValid || isSaving)
     }
 
     // MARK: - Photo Section (draggable)
@@ -298,12 +304,18 @@ struct AddEntryView: View {
                 }
             }
             HStack(spacing: 8) {
-                TextField(lang.s.city, text: $city).textFieldStyle(WanderTextFieldStyle())
-                TextField(lang.s.country, text: $country).textFieldStyle(WanderTextFieldStyle())
+                VStack(alignment: .leading, spacing: 4) {
+                    requiredSectionLabel(lang.s.city)
+                    TextField(lang.s.city, text: $city).textFieldStyle(WanderTextFieldStyle())
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    requiredSectionLabel(lang.s.country)
+                    TextField(lang.s.country, text: $country).textFieldStyle(WanderTextFieldStyle())
+                }
                 locationButton
             }
             VStack(alignment: .leading, spacing: 8) {
-                sectionLabel(lang.s.name)
+                requiredSectionLabel(lang.s.name)
                 TextField(lang.s.shopNamePlaceholder, text: $name).textFieldStyle(WanderTextFieldStyle())
             }
             if resolvedCoordinate != nil {
@@ -378,6 +390,13 @@ struct AddEntryView: View {
     private func sectionLabel(_ text: String) -> some View {
         Text(text).font(.system(size: 11, weight: .semibold)).tracking(1)
             .foregroundColor(.wanderMuted).textCase(.uppercase)
+    }
+
+    private func requiredSectionLabel(_ text: String) -> some View {
+        HStack(spacing: 2) {
+            sectionLabel(text)
+            Text("*").font(.system(size: 13, weight: .bold)).foregroundColor(.red)
+        }
     }
 
     private func geocodeAddress() {

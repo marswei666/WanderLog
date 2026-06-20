@@ -75,6 +75,7 @@ final class EntryStore: ObservableObject {
     func add(_ entry: Entry) {
         entries.insert(entry, at: 0)
         save()
+        triggerCloudSync()
     }
 
     func update(_ entry: Entry) {
@@ -87,6 +88,12 @@ final class EntryStore: ObservableObject {
         PhotoRepository.shared.delete(entry.photoFilenames)
         entries.removeAll { $0.id == entry.id }
         save()
+        triggerCloudSync()
+    }
+
+    private func triggerCloudSync() {
+        let userName = UserDefaults.standard.string(forKey: "profile_name") ?? ""
+        CloudSyncService.shared.syncStats(entries: entries, userName: userName)
     }
 
     // MARK: - CustomCategory CRUD
